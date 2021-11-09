@@ -1,6 +1,3 @@
-window.onload = init;
-
-
 String.prototype.repeat = function( num ) {
     return new Array( num + 1 ).join(this);
 }
@@ -385,5 +382,11 @@ $('.btn-danger').click(function() {
     console.log(apexCharts);
     console.log(charts);
     individual_question_panel_generator(num_iterations);
+
+});
+
+$('.btn-success').click(function() {
+    init();
+    $("#h2-container").addClass("opacity1");
 
 });
