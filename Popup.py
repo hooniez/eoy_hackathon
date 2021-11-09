@@ -5,10 +5,10 @@ from client import Client
 main = Tk(className = 'window')
 client = Client()
 
-background_colour = 'red'
-text_colour = background_colour
-slider_colour = "red"
-slider_background_colour = "orange"
+background_colour = 'grey'
+text_colour = 'grey'
+slider_colour = "blue"
+slider_background_colour = "grey"
 
 main['background'] = background_colour
 sw = int(main.winfo_screenwidth()/3)
