@@ -12,6 +12,9 @@
     <link rel="stylesheet" type="text/css" href="static/style.css" />
     <link href="static/bootstrap.min.css" rel="stylesheet">
     <link href="static/dashboard.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" type="text/css" href="style.css" />
+    <link href="bootstrap.min.css" rel="stylesheet">
+    <link href="dashboard.css" rel="stylesheet"> -->
 
 </head>
 <body>
@@ -296,8 +299,12 @@
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script src="https://use.fontawesome.com/d39c20706a.js"></script>
 <script>
+  
 
   const min_warning_score = 30
+
+  var cliVals = []
+  var recValues = []
 
   const random_sentences = [
     "...thanks for clarification...",
@@ -348,22 +355,33 @@
     }
   }
 
-  function individual_graph_generator(num_students) {
+  var chart_dict = [];
+
+  async function individual_graph_generator() {
+    recValues = await getRecentValues();
+    recValues = recValues.values;
+    num_students = recValues.length;
     let str_python_graphs = '<div class="col-xs-6 col-sm-3 placeholder python_graphs"><div>hi</div></div>';
     let num_python_graphs = num_students;
     $str_python_graphs = $(str_python_graphs.repeat(num_python_graphs));
 
     let id_python_graph_container_name = "individual_chart_python_graph_container";
-    let id_python_graph_name = "individual_chart_python_graph";
+    
     for (let i = 0; i < num_python_graphs; i++) {
+       
+      console.log("rec Values inside individual is ")
+      console.log(recValues)
+      let id_python_graph_name = "individual_chart_python_graph_" + i;
+      chart_dict[i].client = recValues[i].client;
+      chart_dict[i].
       $("#individual_report_container").append($str_python_graphs);
       
       $(".python_graphs:eq(" + i + ")").attr('id', id_python_graph_container_name + "_" + i); // python_graph_contianer selected
-      $("#" + id_python_graph_container_name + "_" + i + " div").attr('id', id_python_graph_name + "_" + i); // python_graph selected
-      $("#" + id_python_graph_name + "_" + i).addClass("graphs");
+      $("#" + id_python_graph_container_name + "_" + i + " div").attr('id', id_python_graph_name); // python_graph selected
+      $("#" + id_python_graph_name).addClass("graphs");
       chart_intervals.push(graph_generator("#" + id_python_graph_name + "_" + i, "Student" + i));
       chart_titles.push("Student" + i);
-      chart_container_ids.push("#" + id_python_graph_name + "_" + i);
+      chart_container_ids.push("#" + id_python_graph_name);
 
 
       
@@ -431,7 +449,7 @@
         if (ran_num == 5) {
           y_ran_num = 100 - parseInt(Math.random() * 70)
           if (y_ran_num == 0) {
-            y_ran_num = 50
+            y_ran_num = 5
           }
         } else if (ran_num == 4) {
           y_ran_num = parseInt(Math.random() * 70)
@@ -454,17 +472,21 @@
           return data;
       }
 
+
+
       async function getClientValAverage() {
-        cliVals = []
+        // cliVals = []
         recValues = await getRecentValues();
         recValues = recValues.values;
         for (let i = 0; i < recValues.length; i++) {
           cliVals.push(parseInt(recValues[i].value))
         }
-        console.log(recValues);
+        // console.log("recValues is")
+        // console.log(recValues);
         ave = getMeanScore(cliVals);
-        console.log(cliVals);
-        console.log(ave);
+        // console.log("cliVals is")
+        // console.log(cliVals);
+        // console.log(ave);
         data.push({
           "x": count,
           "y": ave
@@ -477,8 +499,8 @@
   
       function getMeanScore(scores) {
         document.querySelectorAll(".slider").forEach(x => scores.push(parseInt(x.value)));
-        console.log(scores);
-        console.log(scores.reduce((a,b) => a + b, 0) / scores.length);
+        // console.log(scores);
+        // console.log(scores.reduce((a,b) => a + b, 0) / scores.length);
         return Math.round(scores.reduce((a,b) => a + b, 0) / scores.length);
       }
 
@@ -535,7 +557,7 @@
 
 
   
-      let chart = new ApexCharts(document.querySelector(id, title), options);
+      let chart = new ApexCharts(document.querySelector(id), options);
       charts.push(chart);
       chart.render();
 
@@ -544,7 +566,14 @@
         
         
       let chart_interval = window.setInterval(() => {
-        getClientValAverage();
+          getClientValAverage();
+        
+        
+        console.log("chart interval recValues");
+        console.log(recValues);
+        console.log("chart interval cliVals");
+        console.log(cliVals);
+        
         // getNewSeries()
         chart.updateSeries([{
               data: data
@@ -574,7 +603,7 @@
 async function getRecentValues() {
   const url = "http://127.0.0.1:5000/recentval"
   let result = await get(url);
-  // console.log(result)
+  console.log("result is" + result)
   return result
 }
 
@@ -599,11 +628,14 @@ function get(url, params = null) {
 }
 
 window.onload = function () {
-  let num_students = 8
-  chart_intervals.push(graph_generator("#chartContainer", "Group"));
-  chart_container_ids.push("#chartContainer");
-  chart_titles.push("Group");
-  individual_graph_generator(num_students);
+  let num_students = 7
+  // chart_intervals.push(graph_generator("#chartContainer", "Group"));
+  // chart_container_ids.push("#chartContainer");
+  // chart_titles.push("Group");
+  // while (recValues.length == 0) {
+  //       console.log("recValues is undefined")
+  //     }
+  individual_graph_generator();
 
   $('#individual_report_container').on("click", ".fa.fa-times", function() {
     $(this).parent().parent().parent().parent().css('transition', 'opacity 1s');
@@ -740,7 +772,7 @@ window.onload = function () {
   
         let chart = new ApexCharts(document.querySelector(chart_container_ids[i]), options);
         chart.render();
-        console.log(chart);
+        // console.log(chart);
   
       }
 
@@ -764,6 +796,12 @@ window.onload = function () {
 
 
 }
+
+// class Graph {
+//   constructor() {
+
+//   }
+// }
 
 
 
