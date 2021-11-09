@@ -6,7 +6,7 @@ import time
 app = Flask(__name__, static_url_path='/static')
 
 DATABASE = Path(
-    "slidervalues.db"
+    "slidervals.db"
 )
 
 
@@ -17,39 +17,45 @@ def getDB():
 def addToDB(insertVals):
     conn = getDB()
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO slidervals (timestamp, client, value) values (?,?,?)", insertVals)
+    cursor.execute("INSERT or replace INTO vals (timestamp, client, value) values (?,?,?)", insertVals)
     conn.commit()
 
 
 @app.route('/', methods=['GET'])
 def initiate():
-    conn = getDB()
-    cursor = conn.cursor()
-    cursor.execute("DELETE FROM slidervals")
-    rv = cursor.fetchall()
-    cursor.close()
     return app.send_static_file('index.html')
 
 @app.route('/recentval', methods=['GET'])
 def getvals():
     conn = getDB()
     cursor = conn.cursor()
-    cursor.execute(f"SELECT MAX(timestamp) timestamp, value, client FROM slidervals group by client")
+    cursor.execute(f"SELECT MAX(timestamp) timestamp, value, client FROM vals group by client")
     rv = cursor.fetchall()
     cursor.close()
-    res = {"values": [{
-        "timestamp": ts,
-        "client": cl,
-        "value": vl
-    } for (ts, vl, cl) in rv]}
-    return res, 200
+    res = {
+        "values": [{
+            "timestamp": ts,
+            "client": cl,
+            "value": vl
+        } for (ts, vl, cl) in rv]
+    }
+    if len(res['values']) < 1:
+        return {
+            "values": [{
+                "timestamp": None,
+                "client": None,
+                "value": 50
+            }]
+        }, 200
+    else:
+        return res, 200
 
 
 @app.route('/clients', methods=['GET'])
 def getclients():
     conn = getDB()
     cursor = conn.cursor()
-    cursor.execute("SELECT DISTINCT(client) FROM slidervals")
+    cursor.execute("SELECT DISTINCT(client) FROM vals")
     rv = cursor.fetchall()
     cursor.close()
     clients = [cl[0] for cl in rv]
@@ -68,13 +74,12 @@ def dataDump():
 @app.route('/clientremove', methods=['GET'])
 def clientRemove():
     client = request.args.get('client')
+    print(str(client))
     conn = getDB()
     cursor = conn.cursor()
-    cursor.execute("DELETE FROM slidervals WHERE client = (?)", client)
-    rv = cursor.fetchall()
-    cursor.close()
+    cursor.execute("DELETE FROM vals WHERE client = (?)", [client])
+    conn.commit()
     return Response(), 200
 
-
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()

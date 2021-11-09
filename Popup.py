@@ -31,11 +31,14 @@ current_value = IntVar()
 
 
 def get_current_value():
-    return '{: .2f}'.format(current_value.get())
+    return '{: .2f}'.format(slider.get())
 
 
 def slider_changed(event):
+    print("working")
     sliderVal = get_current_value()
+    print(sliderVal)
+    client.send(sliderVal)
     value_label.configure(text=sliderVal)
 
 
@@ -84,12 +87,12 @@ slider = Scale(
     from_=0,
     to=100,
     orient='horizontal',
-    command=slider_changed,
-    variable=current_value,
     width=50,
     bg = slider_colour,
     troughcolor = slider_background_colour
 )
+
+slider.bind("<ButtonRelease-1>", slider_changed)
 
 slider.grid(
     column=1,
@@ -127,6 +130,6 @@ value_label.grid(
 
 
 ### Makes the main loop work, so the box sits on the screen
-tick()
+# tick()
 main.protocol("WM_DELETE_WINDOW", onClose)
 main.mainloop()
