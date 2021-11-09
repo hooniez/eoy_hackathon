@@ -4,7 +4,8 @@ import socket
 class Client:
     HEADER = 64
     PORT = 5050
-    SERVER = socket.gethostbyname(socket.gethostname())
+    # SERVER = socket.gethostbyname(socket.gethostname())
+    SERVER = socket.gethostbyname('localhost')
     FORMAT = "utf-8"
     ADDR = (SERVER, PORT)
     DISCONNECTMSG = "!DISCONECT"

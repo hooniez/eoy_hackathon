@@ -63,8 +63,9 @@
 }
 
 @keyframes warning {
-    from{background: rgb(255, 255, 255)}
-    to{background: rgb(255, 125, 125)}
+    0%{background: rgb(255, 255, 255);}
+    50%{background: rgb(255, 125, 125);}
+    100%{background: rgb(255, 255, 255);}
 }
 
 .warning {
@@ -75,10 +76,6 @@
 .main {
     position: relative;
     z-index:1;
-}
-
-.summary_report_container {
-
 }
 
 .overlay {
