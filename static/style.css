@@ -1,0 +1,114 @@
+#toggle-students-button {
+    background: blue;
+    color:white;
+    padding:10px;
+    margin:10px;
+}
+
+#student-graphs {
+    display: grid;
+    grid-gap: 10px;
+    margin:20px;
+    grid-template-columns: repeat(auto-fill, 200px);
+}
+
+.slidecontainer {
+    padding:10px;
+    margin:20px;
+}
+
+#h1-container {
+    display: flex; 
+    justify-content: space-between;
+    align-items: center;
+}
+
+#h1-container h1 {
+    display: inline-block;
+}
+
+#h2-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+#individual_report_container {
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+.opacity1 {
+    opacity: 1 !important;
+    transition: opacity 1s;
+}
+
+.graphs {
+    position:relative;
+    z-index:1;
+}
+
+.question_panels {
+    width: 100%;
+    height: 100%;
+    position: absolute; 
+    background: #eee;
+    z-index:2;
+
+}
+
+.card-heading-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+@keyframes warning {
+    from{background: rgb(255, 255, 255)}
+    to{background: rgb(255, 125, 125)}
+}
+
+.warning {
+    animation-name: warning;
+    animation-duration: 2s;
+}
+
+.main {
+    position: relative;
+    z-index:1;
+}
+
+.summary_report_container {
+
+}
+
+.overlay {
+    position:absolute; 
+    background: #000 !important;
+    opacity: 0.8 !important;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+    transition: 'background' 2s;
+}
+
+#ces_img {
+
+    max-width: 100%;
+    height: auto;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    width: 50%;
+    height: 50%;
+    background: #eee;
+    z-index: 6;
+}
+
+.opacity0 {
+    background: #fff !important;
+    opacity: 1 !important;
+    transition: 'background' 2s;
+}
