@@ -23,6 +23,11 @@ def addToDB(insertVals):
 
 @app.route('/', methods=['GET'])
 def initiate():
+    conn = getDB()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM slidervals")
+    rv = cursor.fetchall()
+    cursor.close()
     return app.send_static_file('index.html')
 
 @app.route('/recentval', methods=['GET'])

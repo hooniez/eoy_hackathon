@@ -459,7 +459,7 @@
         recValues = await getRecentValues();
         recValues = recValues.values;
         for (let i = 0; i < recValues.length; i++) {
-          cliVals.push(recValues[i].value)
+          cliVals.push(parseInt(recValues[i].value))
         }
         console.log(recValues);
         ave = getMeanScore(cliVals);
