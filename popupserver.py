@@ -37,7 +37,8 @@ def handleClient(conn, addr):
 
             req = requests.post('http://127.0.0.1:5000/datadump', data=sendVals)
             print(f"[{addr}] {msg}")
-            
+    
+    req = requests.get(f'http://127.0.0.1:5000/clientremove?client={clientKey}')
     clientVals.pop(clientKey, None)
     conn.close()
 
