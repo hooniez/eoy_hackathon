@@ -9,16 +9,9 @@
     <meta name="author" content="">
 
     <title>Dashboard Template for Bootstrap</title>
-<<<<<<< Updated upstream:static/index.html
     <link rel="stylesheet" type="text/css" href="static/style.css" />
     <link href="static/bootstrap.min.css" rel="stylesheet">
     <link href="static/dashboard.css" rel="stylesheet">
-=======
-    <link rel="stylesheet" type="text/css" href="style.css" />
-    <link href="bootstrap.min.css" rel="stylesheet">
-    <link href="dashboard.css" rel="stylesheet">
-    
->>>>>>> Stashed changes:apexchart.html
 
 </head>
 <body>
@@ -461,11 +454,29 @@
               count++
           return data;
       }
+
+      async function getClientValAverage() {
+        cliVals = []
+        recValues = await getRecentValues();
+        recValues = recValues.values;
+        for (let i = 0; i < recValues.length; i++) {
+          cliVals.push(recValues[i].value)
+        }
+        console.log(recValues);
+        ave = getMeanScore(cliVals);
+        console.log(cliVals);
+        console.log(ave);
+        data.push({
+          "x": count,
+          "y": ave
+        });
+        count++
+        return data;
+      }
       
       
   
-      function getMeanScore() {
-        let scores = [];
+      function getMeanScore(scores) {
         document.querySelectorAll(".slider").forEach(x => scores.push(parseInt(x.value)));
         console.log(scores);
         console.log(scores.reduce((a,b) => a + b, 0) / scores.length);
@@ -534,8 +545,8 @@
         
         
       let chart_interval = window.setInterval(() => {
-        getRecentValues()
-        getNewSeries()
+        getClientValAverage();
+        // getNewSeries()
         chart.updateSeries([{
               data: data
           }]);
@@ -561,11 +572,11 @@
 
   }
 
-<<<<<<< Updated upstream:static/index.html
 async function getRecentValues() {
   const url = "http://127.0.0.1:5000/recentval"
   let result = await get(url);
-  console.log(result)
+  // console.log(result)
+  return result
 }
 
 function get(url, params = null) {
@@ -587,9 +598,6 @@ function get(url, params = null) {
     xhr.send();
   });
 }
-=======
-
->>>>>>> Stashed changes:apexchart.html
 
 window.onload = function () {
   let num_students = 8

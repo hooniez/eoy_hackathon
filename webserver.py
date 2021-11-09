@@ -36,7 +36,7 @@ def getvals():
         "timestamp": ts,
         "client": cl,
         "value": vl
-    } for (ts, cl, vl) in rv]}
+    } for (ts, vl, cl) in rv]}
     return res, 200
 
 
@@ -57,6 +57,17 @@ def dataDump():
     insertVals = (str(time.time()), form.get('client'), form.get('value'))
     print(insertVals)
     addToDB(insertVals)
+    return Response(), 200
+
+
+@app.route('/clientremove', methods=['GET'])
+def clientRemove():
+    client = request.args.get('client')
+    conn = getDB()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM slidervals WHERE client = (?)", client)
+    rv = cursor.fetchall()
+    cursor.close()
     return Response(), 200
 
 
