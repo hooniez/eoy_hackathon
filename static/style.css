@@ -50,8 +50,13 @@
 }
 
 .question_panels {
-    width: 100%;
-    height: 100%;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    width: 75%;
+    height: 75%;
+    margin: auto;
     position: absolute; 
     background: #eee;
     z-index:2;
@@ -60,7 +65,7 @@
 
 .card-heading-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
 }
 
 @keyframes warning {
@@ -111,3 +116,7 @@
     transition: 'background' 2s;
 }
 
+.opacity5 {
+    opacity: 0.5 !important;
+    transition: 'opacity' 2s;
+}

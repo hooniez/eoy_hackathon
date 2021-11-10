@@ -4,7 +4,6 @@ String.prototype.repeat = function( num ) {
 
 const GROUPCLIENT = "group"
 let charts = [];
-let apexCharts = [];
 let interval;
 
 const random_sentences = [
@@ -125,7 +124,7 @@ function createChart(parentContainer, client) {
     parentContainer.appendChild(chartContElement);
 
 
-    let chart = new Chart(client, chartElement, charts.length, `Student ${charts.length}`);
+    let chart = new Chart(client, chartContElement, charts.length, `Student ${charts.length}`);
     chart.render();
     charts.push(chart);
     console.log(`chart id ${chart.client} created at ${chart.element}`);
@@ -202,7 +201,6 @@ class Chart {
             this.element,
             this.options
         );
-        apexCharts.push(this.chart);
         this.chart.render();
     }
 
@@ -283,7 +281,9 @@ function individual_question_panel_generator(num_students) {
       if (rand_num == 0) {
         $(charts[i].htmlId).prepend(str_question_panels);
         $(charts[i].htmlId).find(".question_panels").attr('id', "student" + i);
-        $("#student" + i).html('<div class="jumbotron"><div class="container"><div class="card-heading-container"><span><b>Student' + i + '</b></span><i class="fa fa-times" style="cursor: pointer;" aria-hidden="true"></i></div><h3>Question</h3><p>' + random_questions[Math.floor(Math.random()*random_questions.length)] +'</p></div>');
+        $("#student" + i).html('<div class="jumbotron"><div class="container"><div class="card-heading-container"><i class="fa fa-times" style="cursor: pointer;" aria-hidden="true"></i></div><h3>Question</h3><p>' + random_questions[Math.floor(Math.random()*random_questions.length)] +'</p></div>');
+        $(charts[i].htmlId).find(".question_panels").next().toggleClass("opacity5");
+
       }
     }
 }
@@ -291,6 +291,7 @@ function individual_question_panel_generator(num_students) {
 $('#individual_report_container').on("click", ".fa.fa-times", function() {
     $(this).parent().parent().parent().parent().css('transition', 'opacity 1s');
     $(this).parent().parent().parent().parent().css('opacity', '0.0');
+    $(this).parent().parent().parent().parent().next().toggleClass("opacity5")
 });
 
 
@@ -306,13 +307,13 @@ $("#flexSwitchCheckDefault").change(function() {
 $('.btn-danger').click(function() {
     clearInterval(interval);
 
-    let num_iterations = apexCharts.length
+    let num_iterations = charts.length
     for (let i = 0; i < num_iterations; i++) {
         
-        let chart = apexCharts[i];
+        let chart = charts[i];
         console.log(chart);
-        let data_y = chart.data.twoDSeries;
-        let data_x = chart.data.twoDSeriesX;
+        let data_y = chart.chart.data.twoDSeries;
+        let data_x = chart.chart.data.twoDSeriesX;
         let last_x_value = data_x.at(-1);
 
         let options = {
