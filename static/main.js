@@ -125,7 +125,7 @@ function createChart(parentContainer, client) {
     parentContainer.appendChild(chartContElement);
 
 
-    let chart = new Chart(client, chartElement, charts.length, `Student ${charts.length}`);
+    let chart = new Chart(client, chartContElement, charts.length, `Student ${charts.length}`);
     chart.render();
     charts.push(chart);
     console.log(`chart id ${chart.client} created at ${chart.element}`);
@@ -283,7 +283,7 @@ function individual_question_panel_generator(num_students) {
       if (rand_num == 0) {
         $(charts[i].htmlId).prepend(str_question_panels);
         $(charts[i].htmlId).find(".question_panels").attr('id', "student" + i);
-        $("#student" + i).html('<div class="jumbotron"><div class="container"><div class="card-heading-container"><span><b>Student' + i + '</b></span><i class="fa fa-times" style="cursor: pointer;" aria-hidden="true"></i></div><h3>Question</h3><p>' + random_questions[Math.floor(Math.random()*random_questions.length)] +'</p></div>');
+        $("#student" + i).html('<div class="jumbotron"><div class="container"><div class="card-heading-container"><i class="fa fa-times" style="cursor: pointer;" aria-hidden="true"></i></div><h3>Question</h3><p>' + random_questions[Math.floor(Math.random()*random_questions.length)] +'</p></div>');
       }
     }
 }
