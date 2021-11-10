@@ -116,3 +116,7 @@
     transition: 'background' 2s;
 }
 
+.opacity5 {
+    opacity: 0.5 !important;
+    transition: 'opacity' 2s;
+}
