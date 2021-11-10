@@ -284,6 +284,8 @@ function individual_question_panel_generator(num_students) {
         $(charts[i].htmlId).prepend(str_question_panels);
         $(charts[i].htmlId).find(".question_panels").attr('id', "student" + i);
         $("#student" + i).html('<div class="jumbotron"><div class="container"><div class="card-heading-container"><i class="fa fa-times" style="cursor: pointer;" aria-hidden="true"></i></div><h3>Question</h3><p>' + random_questions[Math.floor(Math.random()*random_questions.length)] +'</p></div>');
+        $(charts[i].htmlId).find(".question_panels").next().toggleClass("opacity5");
+
       }
     }
 }
@@ -291,6 +293,7 @@ function individual_question_panel_generator(num_students) {
 $('#individual_report_container').on("click", ".fa.fa-times", function() {
     $(this).parent().parent().parent().parent().css('transition', 'opacity 1s');
     $(this).parent().parent().parent().parent().css('opacity', '0.0');
+    $(this).parent().parent().parent().parent().next().toggleClass("opacity5")
 });
 
 
@@ -310,7 +313,6 @@ $('.btn-danger').click(function() {
     for (let i = 0; i < num_iterations; i++) {
         
         let chart = apexCharts[i];
-        console.log(chart);
         let data_y = chart.data.twoDSeries;
         let data_x = chart.data.twoDSeriesX;
         let last_x_value = data_x.at(-1);
