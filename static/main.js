@@ -4,7 +4,6 @@ String.prototype.repeat = function( num ) {
 
 const GROUPCLIENT = "group"
 let charts = [];
-let apexCharts = [];
 let interval;
 
 const random_sentences = [
@@ -202,7 +201,6 @@ class Chart {
             this.element,
             this.options
         );
-        apexCharts.push(this.chart);
         this.chart.render();
     }
 
@@ -306,13 +304,13 @@ $("#flexSwitchCheckDefault").change(function() {
 $('.btn-danger').click(function() {
     clearInterval(interval);
 
-    let num_iterations = apexCharts.length
+    let num_iterations = charts.length
     for (let i = 0; i < num_iterations; i++) {
         
-        let chart = apexCharts[i];
+        let chart = charts[i];
         console.log(chart);
-        let data_y = chart.data.twoDSeries;
-        let data_x = chart.data.twoDSeriesX;
+        let data_y = chart.chart.data.twoDSeries;
+        let data_x = chart.chart.data.twoDSeriesX;
         let last_x_value = data_x.at(-1);
 
         let options = {

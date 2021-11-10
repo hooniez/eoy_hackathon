@@ -4,8 +4,8 @@ import requests
 
 HEADER = 64
 PORT = 5050
-# SERVER = socket.gethostbyname(socket.gethostname)
-SERVER = socket.gethostbyname('localhost')
+SERVER = socket.gethostbyname(socket.gethostname())
+# SERVER = socket.gethostbyname('localhost')
 ADDR = (SERVER, PORT)
 FORMAT = "utf-8"
 DISCONNECTMSG = "!DISCONECT"
@@ -15,6 +15,12 @@ server.bind(ADDR)
 
 clientVals = {}
 
+def closeConnection(conn, clientKey):
+    req = requests.get(f'http://127.0.0.1:5000/clientremove?client={clientKey}')
+    clientVals.pop(clientKey, None)
+    conn.close()
+
+
 def handleClient(conn, addr):
     print(f"NEW CONNECTION: {addr} connected.")
     clientKey = f"{addr[0].replace('.', '')}{addr[1]}"
@@ -22,10 +28,21 @@ def handleClient(conn, addr):
     clientVals[clientKey] = 50
     connected = True
     while connected:
-        msgLen = conn.recv(HEADER).decode(FORMAT)
+        try:
+            msgLen = conn.recv(HEADER).decode(FORMAT)
+        except ConnectionResetError:
+            closeConnection(conn, clientKey)
+            return
+        
         if msgLen:
             msgLen = int(msgLen)
-            msg =  conn.recv(msgLen).decode(FORMAT)
+            try:
+                msg =  conn.recv(msgLen).decode(FORMAT)
+            except ConnectionResetError:
+                closeConnection(conn, clientKey)
+                return
+            
+
             if msg == DISCONNECTMSG:
                 connected = False
             else:
@@ -39,9 +56,8 @@ def handleClient(conn, addr):
             req = requests.post('http://127.0.0.1:5000/datadump', data=sendVals)
             print(f"[{addr}] {msg}")
     
-    req = requests.get(f'http://127.0.0.1:5000/clientremove?client={clientKey}')
-    clientVals.pop(clientKey, None)
-    conn.close()
+    closeConnection(conn, clientKey)
+
 
 
 def start():
