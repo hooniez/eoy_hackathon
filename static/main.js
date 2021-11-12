@@ -373,7 +373,7 @@ $('.btn-danger').click(function() {
         
         let newChart;
         if (i == 0) {
-            charts[i].chart.destroy();
+            `charts[i].chart.destroy();`
             newChart = new ApexCharts(document.querySelector("#chartContainer"), options);
         } else {
             charts[i].chart.destroy();
