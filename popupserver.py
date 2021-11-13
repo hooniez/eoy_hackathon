@@ -4,8 +4,8 @@ import requests
 
 HEADER = 64
 PORT = 5050
-SERVER = socket.gethostbyname(socket.gethostname())
-# SERVER = socket.gethostbyname('localhost')
+# SERVER = socket.gethostbyname(socket.gethostname())
+SERVER = socket.gethostbyname('localhost')
 ADDR = (SERVER, PORT)
 FORMAT = "utf-8"
 DISCONNECTMSG = "!DISCONECT"
