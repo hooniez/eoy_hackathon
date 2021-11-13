@@ -137,7 +137,7 @@ class Chart {
     constructor(client, element, id, title) {
         this.id = id;
         this.client = client;
-        this.htmlId = `#individual_chart_cont_${this.client}`;
+        this.htmlId = '#' + element.id;
         this.element = element;
         this.chart = null;
         this.data = [];
@@ -227,7 +227,7 @@ class Chart {
     }
 
     warning() {
-        let min_warning_score = 30
+        let min_warning_score = 50
         if (this.data[this.data.length - 1].y < min_warning_score) {
             if (!$(this.htmlId).hasClass("warning")) {
                 $(this.htmlId).toggleClass("warning");
@@ -383,11 +383,9 @@ $('.btn-danger').click(function() {
     console.log(apexCharts);
     console.log(charts);
     individual_question_panel_generator(num_iterations);
-
 });
 
 $('.btn-success').click(function() {
     init();
     $("#h2-container").addClass("opacity1");
-
 });
